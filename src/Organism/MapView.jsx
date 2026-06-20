@@ -3,7 +3,6 @@ import {
     MapContainer,
     TileLayer,
     Marker,
-    Popup,
     useMap,
     useMapEvents,
 } from "react-leaflet";
@@ -11,25 +10,21 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import usePOI from "../hooks/usePOI";
 
-const activeIcon = L.divIcon({
-    className: "custom-map-pin custom-map-pin-active",
-    html: "<span></span>",
-    iconSize: [24, 24],
-    iconAnchor: [12, 24],
-    popupAnchor: [0, -24],
+const cyanIcon = L.icon({
+    iconUrl: "/cyan_pin.svg",
+    iconSize: [36, 48],
+    iconAnchor: [18, 48],
 });
 
-const pendingIcon = L.divIcon({
-    className: "custom-map-pin custom-map-pin-pending",
-    html: "<span></span>",
-    iconSize: [24, 24],
-    iconAnchor: [12, 24],
-    popupAnchor: [0, -24],
+const yellowIcon = L.icon({
+    iconUrl: "/yellow_pin.svg",
+    iconSize: [36, 48],
+    iconAnchor: [18, 48],
 });
 
 function getPOIIcon(poi) {
     const status = poi.status?.trim().toLowerCase();
-    return status === "en cours" ? pendingIcon : activeIcon;
+    return status === "en cours" ? yellowIcon : cyanIcon;
 }
 
 function MapFocusOnPOI({ poi, isEditingPOI }) {
@@ -137,15 +132,7 @@ export default function MapView() {
                                     }
                                 },
                             }}
-                        >
-                            <Popup>
-                                <strong>{poi.name || "POI sans nom"}</strong>
-                                <br />
-                                {poi.type || "Type non défini"}
-                                <br />
-                                {poi.status || "Statut non défini"}
-                            </Popup>
-                        </Marker>
+                        />
                     );
                 })}
             </MapContainer>

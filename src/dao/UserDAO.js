@@ -13,13 +13,21 @@ export const UserDAO = {
             .from(TABLE_NAME)
             .select('*')
             .eq('id', userId)
-            .single();
+            .limit(2);
 
         if (error) {
             throw new Error(`Erreur lors du chargement du profil : ${error.message}`);
         }
 
-        return data;
+        if (!data || data.length === 0) {
+            throw new Error("Aucun profil administrateur ne correspond a cet utilisateur.");
+        }
+
+        if (data.length > 1) {
+            throw new Error("Plusieurs profils correspondent a cet utilisateur. Verifiez la table users.");
+        }
+
+        return data[0];
     },
 
     /**
