@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { isSupabaseConfigured, supabase } from "../supabase";
+import { supabase } from "../supabase";
 import "./LoginScreen.css";
+
+const isSupabaseConfigured = Boolean(supabase);
 
 export default function LoginScreen({ authError = "" }) {
     const [email, setEmail] = useState("");

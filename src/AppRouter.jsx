@@ -3,7 +3,9 @@ import LoginScreen from "./components/LoginScreen";
 import MapPage from "./pages/MapPage";
 import POIProvider from "./providers/POIProvider";
 import { UserDAO } from "./dao/UserDAO";
-import { isSupabaseConfigured, supabase } from "./supabase";
+import { supabase } from "./supabase";
+
+const isSupabaseConfigured = Boolean(supabase);
 
 export default function AppRouter() {
     const [session, setSession] = useState(null);
