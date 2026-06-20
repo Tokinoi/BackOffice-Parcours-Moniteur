@@ -133,21 +133,24 @@ export class PoisDAO {
             description: poi.description ?? null,
             type: poi.type ?? null,
             status: poi.status ?? null,
+            latitude: poi.latitude,
+            longitude: poi.longitude,
             updated_at: new Date().toISOString(),
         };
 
-        const { data, error } = await supabase
+        const { error } = await supabase
             .from(TABLE_NAME)
             .update(payload)
-            .eq("id", id)
-            .select()
-            .single();
+            .eq("id", id);
 
         if (error) {
             throw new Error(`Erreur lors de la modification du POI : ${error.message}`);
         }
 
-        return data;
+        return {
+            id,
+            ...payload,
+        };
     }
     /**
      * Récupérer les POIs par status

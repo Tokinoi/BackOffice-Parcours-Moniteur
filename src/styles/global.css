@@ -122,4 +122,85 @@
 
     font-size: var(--font-size-xs);
     font-weight: 700;
+
+}
+
+.map-page {
+    width: 100vw;
+    height: 100vh;
+
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr;
+
+    overflow: hidden;
+
+    background: var(--color-background);
+}
+
+.map-page-sidebar {
+    width: 100%;
+    height: 100vh;
+
+    overflow: hidden;
+    z-index: 2;
+}
+
+.map-page-content {
+    width: 100%;
+    height: 100vh;
+
+    min-width: 0;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    background: var(--color-surface);
+    color: var(--color-text);
+
+    border-right: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+}
+
+.map-view {
+    width: 100%;
+    height: 100%;
+}
+
+.leaflet-map {
+    width: 100%;
+    height: 100%;
+}
+/* Custom map pins */
+
+.custom-map-pin {
+    background: transparent;
+    border: none;
+}
+
+.custom-map-pin span {
+    width: 22px;
+    height: 22px;
+
+    display: block;
+
+    border: 3px solid white;
+    border-radius: 50% 50% 50% 0;
+
+    transform: rotate(-45deg);
+
+    box-shadow: var(--shadow-sm);
+}
+
+.custom-map-pin-active span {
+    background: var(--color-primary);
+}
+
+.custom-map-pin-pending span {
+    background: var(--color-warning);
 }

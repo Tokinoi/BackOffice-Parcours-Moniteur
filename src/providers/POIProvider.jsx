@@ -9,6 +9,29 @@ export default function POIProvider({ children }) {
     const [activePOI, setActivePOI] = useState(null);
     const [poiLoading, setPoiLoading] = useState(true);
     const [poiError, setPoiError] = useState("");
+    const [isEditingPOI, setIsEditingPOI] = useState(false);
+    const [editingLocation, setEditingLocation] = useState(null);
+
+    const startPOIEdit = (poi) => {
+        setActivePOI(poi);
+        setIsEditingPOI(true);
+        setEditingLocation({
+            latitude: poi.latitude,
+            longitude: poi.longitude,
+        });
+    };
+
+    const stopPOIEdit = () => {
+        setIsEditingPOI(false);
+        setEditingLocation(null);
+    };
+
+    const updateEditingLocation = (latitude, longitude) => {
+        setEditingLocation({
+            latitude,
+            longitude,
+        });
+    };
 
     const loadPOIs = async () => {
         setPoiLoading(true);
@@ -92,6 +115,12 @@ export default function POIProvider({ children }) {
         clearActivePOI,
         updatePOI,
         deletePOI,
+
+        isEditingPOI,
+        editingLocation,
+        startPOIEdit,
+        stopPOIEdit,
+        updateEditingLocation,
     };
     return (
         <POIContext.Provider value={value}>

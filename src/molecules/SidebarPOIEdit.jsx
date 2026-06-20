@@ -3,7 +3,11 @@ import usePOI from "../hooks/usePOI";
 import { POI_STATUSES, POI_TYPES } from "../constants/poiOptions";
 
 export default function SidebarPOIEdit({ poi, onBack, onSaved, onDeleted }) {
-    const { updatePOI, deletePOI } = usePOI();
+    const {
+        updatePOI,
+        deletePOI,
+        editingLocation,
+    } = usePOI();
 
     const [formData, setFormData] = useState({
         name: poi.name || "",
@@ -16,6 +20,9 @@ export default function SidebarPOIEdit({ poi, onBack, onSaved, onDeleted }) {
     const [deleting, setDeleting] = useState(false);
     const [error, setError] = useState("");
 
+    const latitude = editingLocation?.latitude ?? poi.latitude;
+    const longitude = editingLocation?.longitude ?? poi.longitude;
+
     const handleChange = (event) => {
         const { name, value } = event.target;
 
@@ -27,7 +34,6 @@ export default function SidebarPOIEdit({ poi, onBack, onSaved, onDeleted }) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
         setError("");
 
         if (!formData.name.trim()) {
@@ -53,6 +59,8 @@ export default function SidebarPOIEdit({ poi, onBack, onSaved, onDeleted }) {
                 type: formData.type,
                 status: formData.status,
                 description: formData.description.trim(),
+                latitude,
+                longitude,
             });
 
             onSaved?.();
@@ -68,9 +76,7 @@ export default function SidebarPOIEdit({ poi, onBack, onSaved, onDeleted }) {
             `Supprimer définitivement le POI "${poi.name || "sans nom"}" ?`
         );
 
-        if (!confirmed) {
-            return;
-        }
+        if (!confirmed) return;
 
         setError("");
         setDeleting(true);
@@ -93,11 +99,7 @@ export default function SidebarPOIEdit({ poi, onBack, onSaved, onDeleted }) {
 
             <h2>Modifier le POI</h2>
 
-            {error && (
-                <p className="error-message">
-                    {error}
-                </p>
-            )}
+            {error && <p className="error-message">{error}</p>}
 
             <label>
                 Nom
@@ -153,16 +155,24 @@ export default function SidebarPOIEdit({ poi, onBack, onSaved, onDeleted }) {
 
             <div className="readonly-field">
                 <span>Latitude</span>
-                <strong>{poi.latitude ?? "Non renseignée"}</strong>
+                <strong>{latitude ?? "Non renseignée"}</strong>
             </div>
 
             <div className="readonly-field">
                 <span>Longitude</span>
-                <strong>{poi.longitude ?? "Non renseignée"}</strong>
+                <strong>{longitude ?? "Non renseignée"}</strong>
             </div>
 
+            <p className="form-help">
+                Clique sur la carte pour déplacer ce point.
+            </p>
+
             <div className="form-actions">
-                <button type="submit" className="button-primary" disabled={loading || deleting}>
+                <button
+                    type="submit"
+                    className="button-primary"
+                    disabled={loading || deleting}
+                >
                     {loading ? "Enregistrement..." : "Enregistrer"}
                 </button>
 

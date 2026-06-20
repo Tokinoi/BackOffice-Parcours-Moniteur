@@ -1,5 +1,3 @@
-// src/Organism/Sidebar.jsx
-
 import { useState } from "react";
 import Molecules from "../molecules";
 import usePOI from "../hooks/usePOI";
@@ -19,17 +17,31 @@ export default function Sidebar() {
         poiError,
         selectPOI,
         refreshPOIs,
+        startPOIEdit,
+        stopPOIEdit,
     } = usePOI();
 
     const [view, setView] = useState(VIEWS.LIST);
 
-    const handleSelectPOI = (poi) => {
-        selectPOI(poi);
+    const goToList = () => {
+        stopPOIEdit();
+        setView(VIEWS.LIST);
+    };
+
+    const goToDetail = () => {
+        stopPOIEdit();
         setView(VIEWS.DETAIL);
     };
 
-    const handleBackToList = () => {
-        setView(VIEWS.LIST);
+    const goToEdit = () => {
+        startPOIEdit(activePOI);
+        setView(VIEWS.EDIT);
+    };
+
+    const handleSelectPOI = (poi) => {
+        stopPOIEdit();
+        selectPOI(poi);
+        setView(VIEWS.DETAIL);
     };
 
     return (
@@ -55,23 +67,21 @@ export default function Sidebar() {
                 {!poiLoading && view === VIEWS.DETAIL && activePOI && (
                     <Molecules.SidebarPOIDetail
                         poi={activePOI}
-                        onBack={handleBackToList}
-                        onEdit={() => setView(VIEWS.EDIT)}
+                        onBack={goToList}
+                        onEdit={goToEdit}
                     />
                 )}
 
                 {!poiLoading && view === VIEWS.ADD && (
-                    <Molecules.SidebarPOIAdd
-                        onBack={handleBackToList}
-                    />
+                    <Molecules.SidebarPOIAdd onBack={goToList} />
                 )}
 
                 {!poiLoading && view === VIEWS.EDIT && activePOI && (
                     <Molecules.SidebarPOIEdit
                         poi={activePOI}
-                        onBack={() => setView(VIEWS.DETAIL)}
-                        onSaved={() => setView(VIEWS.DETAIL)}
-                        onDeleted={() => setView(VIEWS.LIST)}
+                        onBack={goToDetail}
+                        onSaved={goToDetail}
+                        onDeleted={goToList}
                     />
                 )}
             </div>
