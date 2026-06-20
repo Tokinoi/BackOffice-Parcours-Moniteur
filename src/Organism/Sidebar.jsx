@@ -5,11 +5,10 @@ import usePOI from "../hooks/usePOI";
 const VIEWS = {
     LIST: "list",
     DETAIL: "detail",
-    ADD: "add",
     EDIT: "edit",
 };
 
-export default function Sidebar({ onLogout }) {
+export default function Sidebar({ onLogout, showPendingOnly, onTogglePendingOnly }) {
     const {
         pois,
         activePOI,
@@ -72,8 +71,9 @@ export default function Sidebar({ onLogout }) {
                     <Molecules.SidebarPOIList
                         pois={pois}
                         activePOI={activePOI}
+                        showPendingOnly={showPendingOnly}
+                        onTogglePendingOnly={onTogglePendingOnly}
                         onSelectPOI={handleSelectPOI}
-                        onAddPOI={() => setView(VIEWS.ADD)}
                     />
                 )}
 
@@ -83,10 +83,6 @@ export default function Sidebar({ onLogout }) {
                         onBack={goToList}
                         onEdit={goToEdit}
                     />
-                )}
-
-                {!poiLoading && view === VIEWS.ADD && (
-                    <Molecules.SidebarPOIAdd onBack={goToList} />
                 )}
 
                 {!poiLoading && view === VIEWS.EDIT && activePOI && (
