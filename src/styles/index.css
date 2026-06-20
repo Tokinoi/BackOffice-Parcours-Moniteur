@@ -1,0 +1,4 @@
+/* src/styles/index.css */
+
+@import "./tokens.css";
+@import "./global.css";
