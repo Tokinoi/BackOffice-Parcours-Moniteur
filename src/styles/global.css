@@ -137,6 +137,7 @@ button {
 .button-primary,
 .button-ghost,
 .button-danger,
+.button-filter,
 .icon-button {
     min-height: 40px;
     border-radius: var(--radius-md);
@@ -183,6 +184,25 @@ button {
     background: var(--color-danger-hover);
 }
 
+.button-filter {
+    padding: 0 12px;
+    border: 1px solid var(--color-border);
+    background: var(--color-white);
+    color: var(--color-text);
+    font-weight: 800;
+}
+
+.button-filter:hover {
+    border-color: var(--color-border-strong);
+    background: var(--color-warning-soft);
+}
+
+.button-filter-active {
+    border-color: var(--color-yellow);
+    background: var(--color-yellow);
+    color: var(--color-black);
+}
+
 .button-primary:disabled,
 .button-danger:disabled {
     opacity: 0.62;
@@ -214,6 +234,7 @@ button {
 .button-primary:active,
 .button-ghost:active,
 .button-danger:active,
+.button-filter:active,
 .icon-button:active,
 .poi-list-item:active {
     transform: translateY(1px);
@@ -222,6 +243,7 @@ button {
 .button-primary:focus-visible,
 .button-ghost:focus-visible,
 .button-danger:focus-visible,
+.button-filter:focus-visible,
 .icon-button:focus-visible,
 .poi-list-item:focus-visible,
 input:focus-visible,
@@ -261,6 +283,14 @@ textarea:focus-visible {
     align-items: flex-start;
     justify-content: space-between;
     gap: var(--space-md);
+}
+
+.sidebar-poi-list-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
 }
 
 .sidebar-poi-list-header h2,

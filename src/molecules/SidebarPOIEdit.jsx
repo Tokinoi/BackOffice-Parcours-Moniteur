@@ -153,16 +153,6 @@ export default function SidebarPOIEdit({ poi, onBack, onSaved, onDeleted }) {
                 />
             </label>
 
-            <div className="readonly-field">
-                <span>Latitude</span>
-                <strong>{latitude ?? "Non renseignée"}</strong>
-            </div>
-
-            <div className="readonly-field">
-                <span>Longitude</span>
-                <strong>{longitude ?? "Non renseignée"}</strong>
-            </div>
-
             <p className="form-help">
                 Clique sur la carte pour déplacer ce point.
             </p>

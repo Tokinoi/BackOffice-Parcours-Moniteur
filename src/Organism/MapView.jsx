@@ -62,7 +62,7 @@ function MapEditController() {
 
     return null;
 }
-export default function MapView() {
+export default function MapView({ showPendingOnly = false }) {
     const {
         pois,
         activePOI,
@@ -75,7 +75,8 @@ export default function MapView() {
         poi.latitude !== null &&
         poi.latitude !== undefined &&
         poi.longitude !== null &&
-        poi.longitude !== undefined
+        poi.longitude !== undefined &&
+        (!showPendingOnly || poi.status?.trim().toLowerCase() === "en cours")
     ));
 
     return (
