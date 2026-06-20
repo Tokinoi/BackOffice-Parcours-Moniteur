@@ -1,0 +1,11 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "build",
+  "framework": "create-react-app",
+  "rewrites": [
+    {
+      "source": "/((?!documentation\\.html|icon\\.png|icon\\.svg|cyan_pin\\.svg|yellow_pin\\.svg|indigoPin\\.svg|favicon\\.ico|logo192\\.png|logo512\\.png|manifest\\.json|robots\\.txt|static/.*).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

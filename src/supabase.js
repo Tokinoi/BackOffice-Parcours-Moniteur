@@ -1,9 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
 
-export const supabase = createClient(
-  process.env.REACT_APP_SUPABASE_URL,
-  process.env.REACT_APP_SUPABASE_PUBLISHABLE_KEY
-);
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
+const supabasePublishableKey = process.env.REACT_APP_SUPABASE_PUBLISHABLE_KEY;
+
+export const isSupabaseConfigured = Boolean(supabaseUrl && supabasePublishableKey);
+
+export const supabase = isSupabaseConfigured
+  ? createClient(supabaseUrl, supabasePublishableKey)
+  : null;
 
 // POI (Point of Interest) functions
 export const poiService = {

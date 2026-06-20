@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Molecules from "../molecules";
 import usePOI from "../hooks/usePOI";
 
@@ -9,13 +9,14 @@ const VIEWS = {
     EDIT: "edit",
 };
 
-export default function Sidebar() {
+export default function Sidebar({ onLogout }) {
     const {
         pois,
         activePOI,
         poiLoading,
         poiError,
         selectPOI,
+        clearActivePOI,
         refreshPOIs,
         startPOIEdit,
         stopPOIEdit,
@@ -23,8 +24,15 @@ export default function Sidebar() {
 
     const [view, setView] = useState(VIEWS.LIST);
 
+    useEffect(() => {
+        if (activePOI && view !== VIEWS.EDIT) {
+            setView(VIEWS.DETAIL);
+        }
+    }, [activePOI, view]);
+
     const goToList = () => {
         stopPOIEdit();
+        clearActivePOI();
         setView(VIEWS.LIST);
     };
 
@@ -38,6 +46,10 @@ export default function Sidebar() {
         setView(VIEWS.EDIT);
     };
 
+    const goToDocumentation = () => {
+        window.location.assign("/documentation.html");
+    };
+
     const handleSelectPOI = (poi) => {
         stopPOIEdit();
         selectPOI(poi);
@@ -48,7 +60,8 @@ export default function Sidebar() {
         <aside className="sidebar">
             <Molecules.SidebarHeader
                 onRefresh={refreshPOIs}
-                onLogout={() => console.log("logout")}
+                onDocumentation={goToDocumentation}
+                onLogout={onLogout}
             />
 
             <div className="sidebar-content">

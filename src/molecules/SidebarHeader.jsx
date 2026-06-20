@@ -3,6 +3,7 @@
 export default function SidebarHeader({
                                           title = "Parcours Moniteur",
                                           onRefresh,
+                                          onDocumentation,
                                           onShowModRequests,
                                           onShowUserMgmt,
                                           onLogout,
@@ -12,6 +13,7 @@ export default function SidebarHeader({
     return (
         <header className="sidebar-header">
             <div className="sidebar-header-title">
+                <img src="/icon.png" alt="" aria-hidden="true" />
                 <h1>{title}</h1>
             </div>
 
@@ -24,6 +26,16 @@ export default function SidebarHeader({
                     aria-label="Actualiser"
                 >
                     🔄
+                </button>
+
+                <button
+                    type="button"
+                    className="icon-button"
+                    onClick={onDocumentation}
+                    title="Documentation"
+                    aria-label="Documentation"
+                >
+                    📘
                 </button>
 
                 {isAdmin && (

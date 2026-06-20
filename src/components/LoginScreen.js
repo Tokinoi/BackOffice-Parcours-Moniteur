@@ -1,164 +1,87 @@
-import { useState } from 'react';
-import { supabase } from '../supabase';
-import './LoginScreen.css';
+import { useState } from "react";
+import { supabase } from "../supabase";
+import "./LoginScreen.css";
 
-export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [displayName, setDisplayName] = useState('');
-  const [role, setRole] = useState('moderator');
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+const isSupabaseConfigured = Boolean(supabase);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
+export default function LoginScreen({ authError = "" }) {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        setError("");
+        setLoading(true);
 
-    if (error) {
-      setError(error.message);
-    }
-    setLoading(false);
-  };
+        if (!isSupabaseConfigured) {
+            setError("Configuration Supabase manquante dans Vercel.");
+            setLoading(false);
+            return;
+        }
 
-  const handleSignUp = async (e) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
+        const { error: loginError } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
 
-    try {
-      // Create auth user
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email,
-        password,
-      });
+        if (loginError) {
+            setError(loginError.message);
+        }
 
-      if (authError) throw authError;
+        setLoading(false);
+    };
 
-      if (!authData.user) {
-        throw new Error('Failed to create user');
-      }
+    const visibleError = error || authError;
 
-      // Create profile
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .insert([
-          {
-            id: authData.user.id,
-            display_name: displayName,
-            role: role,
-          },
-        ]);
+    return (
+        <main className="login-screen">
+            <section className="login-card" aria-labelledby="login-title">
+                <div className="login-brand">
+                    <span className="login-brand-mark">
+                        <img src="/icon.png" alt="" aria-hidden="true" />
+                    </span>
+                    <div>
+                        <h1 id="login-title">Parcours Moniteur</h1>
+                        <p>Back-office administrateur</p>
+                    </div>
+                </div>
 
-      if (profileError) throw profileError;
+                <form onSubmit={handleSubmit}>
+                    <label>
+                        Email administrateur
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(event) => setEmail(event.target.value)}
+                            autoComplete="email"
+                            required
+                        />
+                    </label>
 
-      // Auto-login after signup
-      const { error: loginError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+                    <label>
+                        Mot de passe
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(event) => setPassword(event.target.value)}
+                            autoComplete="current-password"
+                            required
+                        />
+                    </label>
 
-      if (loginError) throw loginError;
+                    <button type="submit" disabled={loading}>
+                        {loading ? "Connexion..." : "Se connecter"}
+                    </button>
+                </form>
 
-      setError('');
-    } catch (err) {
-      setError(err.message);
-    }
-    setLoading(false);
-  };
-
-  const handleSubmit = (e) => {
-    if (isSignUp) {
-      handleSignUp(e);
-    } else {
-      handleLogin(e);
-    }
-  };
-
-  return (
-    <div className="login-screen">
-      <div className="login-card">
-        <h1>Parcours Moniteur</h1>
-        <p>Back-office</p>
-
-        <form onSubmit={handleSubmit}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Mot de passe"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-
-          {isSignUp && (
-            <>
-              <input
-                type="text"
-                placeholder="Nom complet"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-              />
-              <select value={role} onChange={(e) => setRole(e.target.value)}>
-                <option value="moderator">Modérateur</option>
-                <option value="admin">Administrateur</option>
-              </select>
-            </>
-          )}
-
-          <button type="submit" disabled={loading}>
-            {loading ? 'Traitement...' : isSignUp ? 'S\'inscrire' : 'Se connecter'}
-          </button>
-        </form>
-
-        {error && <div className="error-message">{error}</div>}
-
-        <div className="toggle-auth">
-          {isSignUp ? (
-            <>
-              Déjà inscrit?{' '}
-              <button
-                type="button"
-                className="link-btn"
-                onClick={() => {
-                  setIsSignUp(false);
-                  setError('');
-                  setDisplayName('');
-                  setRole('moderator');
-                }}
-              >
-                Se connecter
-              </button>
-            </>
-          ) : (
-            <>
-              Pas encore de compte?{' '}
-              <button
-                type="button"
-                className="link-btn"
-                onClick={() => {
-                  setIsSignUp(true);
-                  setError('');
-                }}
-              >
-                S\'inscrire
-              </button>
-            </>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+                {visibleError && (
+                    <p className="login-error" role="alert">
+                        {visibleError}
+                    </p>
+                )}
+            </section>
+        </main>
+    );
 }
