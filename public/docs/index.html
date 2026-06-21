@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Documentation - Parcours Moniteur</title>
+    <style>
+      :root {
+        --black: #000000;
+        --ink: #092043;
+        --blue: #057dc0;
+        --white: #ffffff;
+        --secondary: #5dd9fa;
+        --green: #09e85c;
+        --yellow: #fee917;
+        --soft: #f4fbfe;
+        --line: #d5edf5;
+        --text: #34536f;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--soft);
+        color: var(--ink);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 16px clamp(18px, 4vw, 44px);
+        background: var(--ink);
+        color: var(--white);
+        box-shadow: 0 10px 28px rgba(9, 32, 67, 0.2);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .brand img {
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+
+      .brand h1 {
+        margin: 0;
+        font-size: clamp(19px, 3vw, 26px);
+        line-height: 1.1;
+      }
+
+      .brand p {
+        margin: 3px 0 0;
+        color: var(--secondary);
+        font-size: 13px;
+      }
+
+      .back-link {
+        min-height: 40px;
+        display: inline-flex;
+        align-items: center;
+        padding: 0 14px;
+        border-radius: 8px;
+        background: var(--blue);
+        color: var(--white);
+        font-weight: 800;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .layout {
+        width: min(1180px, calc(100% - 34px));
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 260px minmax(0, 1fr);
+        gap: 24px;
+        padding: 28px 0 56px;
+      }
+
+      .toc {
+        position: sticky;
+        top: 92px;
+        align-self: start;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--white);
+        box-shadow: 0 10px 28px rgba(9, 32, 67, 0.08);
+      }
+
+      .toc strong {
+        display: block;
+        margin-bottom: 12px;
+      }
+
+      .toc a {
+        display: block;
+        padding: 8px 0;
+        color: var(--text);
+        font-size: 14px;
+        text-decoration: none;
+      }
+
+      .toc a:hover {
+        color: var(--blue);
+      }
+
+      .content {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      section {
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--white);
+        box-shadow: 0 10px 28px rgba(9, 32, 67, 0.08);
+      }
+
+      h2,
+      h3 {
+        margin: 0;
+        line-height: 1.2;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      h3 {
+        margin-top: 20px;
+        font-size: 18px;
+      }
+
+      p,
+      li {
+        color: var(--text);
+        line-height: 1.58;
+      }
+
+      ul,
+      ol {
+        margin: 12px 0 0;
+        padding-left: 20px;
+      }
+
+      li + li {
+        margin-top: 8px;
+      }
+
+      code {
+        padding: 2px 6px;
+        border-radius: 6px;
+        background: #eaf8fe;
+        color: var(--ink);
+        font-size: 0.94em;
+      }
+
+      .meta-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .meta-card {
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #f9fdff;
+      }
+
+      .meta-card strong {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .meta-card span {
+        color: var(--text);
+        font-size: 14px;
+      }
+
+      .shot {
+        margin: 18px 0;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #f9fdff;
+      }
+
+      .shot figcaption {
+        padding: 12px 14px;
+        border-top: 1px solid var(--line);
+        color: var(--text);
+        font-size: 14px;
+      }
+
+      .mock-login,
+      .mock-app,
+      .mock-detail,
+      .mock-edit {
+        min-height: 240px;
+        padding: 16px;
+      }
+
+      .mock-login {
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, var(--ink), var(--blue));
+      }
+
+      .login-panel {
+        width: min(280px, 100%);
+        padding: 18px;
+        border-radius: 12px;
+        background: var(--white);
+        box-shadow: 0 16px 34px rgba(0, 0, 0, 0.22);
+      }
+
+      .login-panel .row,
+      .edit-panel .row {
+        height: 32px;
+        margin-top: 10px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--soft);
+      }
+
+      .login-panel .submit,
+      .edit-panel .submit {
+        height: 34px;
+        margin-top: 12px;
+        border-radius: 8px;
+        background: var(--blue);
+      }
+
+      .mock-app {
+        display: grid;
+        grid-template-columns: 38% 1fr;
+        gap: 0;
+        padding: 0;
+        background: #d9edf5;
+      }
+
+      .mock-sidebar {
+        padding: 14px;
+        background: var(--white);
+        border-right: 1px solid var(--line);
+      }
+
+      .mock-toolbar {
+        height: 34px;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        padding: 6px;
+        border-radius: 8px;
+        background: var(--ink);
+      }
+
+      .tool-dot {
+        width: 22px;
+        height: 22px;
+        border-radius: 7px;
+        background: rgba(255, 255, 255, 0.16);
+      }
+
+      .mock-filter {
+        width: 76px;
+        height: 30px;
+        margin: 14px 0;
+        border-radius: 8px;
+        background: var(--yellow);
+      }
+
+      .mock-item {
+        height: 54px;
+        margin-top: 8px;
+        border-left: 4px solid var(--yellow);
+        border-radius: 8px;
+        background: #fffde6;
+      }
+
+      .mock-item:nth-child(4) {
+        border-left-color: var(--blue);
+        background: var(--soft);
+      }
+
+      .mock-map {
+        position: relative;
+        background:
+          linear-gradient(90deg, rgba(5, 125, 192, 0.18) 1px, transparent 1px),
+          linear-gradient(rgba(5, 125, 192, 0.18) 1px, transparent 1px),
+          #d7eef2;
+        background-size: 42px 42px;
+      }
+
+      .pin {
+        position: absolute;
+        width: 28px;
+        height: 36px;
+        background: var(--secondary);
+        border: 3px solid var(--white);
+        border-radius: 50% 50% 50% 0;
+        transform: rotate(-45deg);
+        box-shadow: 0 10px 18px rgba(9, 32, 67, 0.22);
+      }
+
+      .pin.yellow {
+        background: var(--yellow);
+      }
+
+      .pin.one {
+        left: 48%;
+        top: 38%;
+      }
+
+      .pin.two {
+        left: 64%;
+        top: 56%;
+      }
+
+      .pin.three {
+        left: 34%;
+        top: 62%;
+      }
+
+      .mock-detail,
+      .mock-edit {
+        background: var(--white);
+      }
+
+      .detail-header,
+      .edit-panel {
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--soft);
+      }
+
+      .detail-title {
+        width: 58%;
+        height: 20px;
+        border-radius: 6px;
+        background: var(--ink);
+      }
+
+      .detail-subtitle {
+        width: 38%;
+        height: 13px;
+        margin-top: 8px;
+        border-radius: 6px;
+        background: var(--secondary);
+      }
+
+      .detail-section {
+        height: 46px;
+        margin-top: 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--white);
+      }
+
+      .callout {
+        margin-top: 14px;
+        padding: 14px;
+        border-left: 4px solid var(--blue);
+        border-radius: 8px;
+        background: #eaf8fe;
+        color: var(--text);
+      }
+
+      .warning {
+        border-left-color: var(--yellow);
+        background: #fffde6;
+      }
+
+      @media (max-width: 860px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .toc {
+          position: static;
+        }
+
+        .meta-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <img src="/icon.png" alt="" aria-hidden="true" />
+        <div>
+          <h1>Documentation</h1>
+          <p>Parcours Moniteur - Back-office administrateur</p>
+        </div>
+      </div>
+
+      <a class="back-link" href="/">Retour au back-office</a>
+    </header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="Sommaire">
+        <strong>Sommaire</strong>
+        <a href="#overview">Vue d'ensemble</a>
+        <a href="#access">Acces administrateur</a>
+        <a href="#map-list">Carte et liste</a>
+        <a href="#detail">Detail d'un POI</a>
+        <a href="#edit">Modification</a>
+        <a href="#status">Statuts et couleurs</a>
+        <a href="#help">Aide rapide</a>
+      </aside>
+
+      <main class="content">
+        <section id="overview">
+          <h2>Vue d'ensemble</h2>
+          <p>
+            Parcours Moniteur est un back-office cartographique reserve aux administrateurs.
+            Il permet de consulter les points d'interet pedagogiques, de filtrer les POI
+            en cours de validation, d'ouvrir leur detail depuis la carte ou la liste, et de
+            modifier leurs informations.
+          </p>
+
+          <div class="meta-grid">
+            <div class="meta-card">
+              <strong>Acces</strong>
+              <span>Connexion reservee aux administrateurs autorises.</span>
+            </div>
+            <div class="meta-card">
+              <strong>Usage</strong>
+              <span>Consulter, filtrer et corriger les points d'interet.</span>
+            </div>
+            <div class="meta-card">
+              <strong>Carte</strong>
+              <span>Voir les POI sur la carte et ouvrir leur fiche en un clic.</span>
+            </div>
+          </div>
+        </section>
+
+        <section id="access">
+          <h2>Acces administrateur</h2>
+          <ol>
+            <li>Ouvrez l'application Parcours Moniteur.</li>
+            <li>Saisissez votre email administrateur.</li>
+            <li>Saisissez votre mot de passe.</li>
+            <li>Cliquez sur <code>Se connecter</code>.</li>
+            <li>Si votre compte est autorise, le back-office s'ouvre automatiquement.</li>
+          </ol>
+
+          <div class="callout warning">
+            Si la connexion est refusee, contactez la personne responsable du compte
+            administrateur. Le back-office n'est pas accessible avec un compte standard.
+          </div>
+
+          <figure class="shot">
+            <div class="mock-login">
+              <div class="login-panel">
+                <div class="detail-title"></div>
+                <div class="detail-subtitle"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="submit"></div>
+              </div>
+            </div>
+            <figcaption>La connexion ne donne acces au back-office qu'aux comptes administrateurs actifs.</figcaption>
+          </figure>
+        </section>
+
+        <section id="map-list">
+          <h2>Carte et liste des POI</h2>
+          <figure class="shot">
+            <div class="mock-app">
+              <div class="mock-sidebar">
+                <div class="mock-toolbar">
+                  <span class="tool-dot"></span>
+                  <span class="tool-dot"></span>
+                  <span class="tool-dot"></span>
+                </div>
+                <div class="mock-filter"></div>
+                <div class="mock-item"></div>
+                <div class="mock-item"></div>
+                <div class="mock-item"></div>
+              </div>
+              <div class="mock-map">
+                <span class="pin yellow one"></span>
+                <span class="pin two"></span>
+                <span class="pin three"></span>
+              </div>
+            </div>
+            <figcaption>La liste et la carte partagent le meme filtre : tous les POI ou seulement les POI en cours.</figcaption>
+          </figure>
+
+          <h3>Liste</h3>
+          <ul>
+            <li>La liste affiche les POI disponibles dans le back-office.</li>
+            <li>Chaque item affiche le nom, le type et un badge <code>En cours</code> si le statut correspond.</li>
+            <li>Les coordonnees ne sont plus affichees dans la liste.</li>
+            <li>Un clic sur un item ouvre le panneau de detail du POI.</li>
+          </ul>
+
+          <h3>Carte</h3>
+          <ul>
+            <li>La carte affiche les POI positionnes geographiquement.</li>
+            <li>Les pins cyan representent les POI actifs.</li>
+            <li>Les pins jaunes representent les POI avec le statut <code>en cours</code>.</li>
+            <li>Les pins rouges representent les POI inactifs.</li>
+            <li>Un clic sur un pin ouvre le detail dans le panneau lateral, sans modal au-dessus du pin.</li>
+          </ul>
+
+          <h3>Filtre En cours</h3>
+          <ul>
+            <li>Le bouton <code>En cours</code> controle la liste et la carte en meme temps.</li>
+            <li>Filtre desactive : tous les POI sont visibles dans la liste et sur la carte.</li>
+            <li>Filtre actif : seuls les POI en cours sont visibles.</li>
+          </ul>
+        </section>
+
+        <section id="detail">
+          <h2>Detail d'un POI</h2>
+          <p>Le detail s'ouvre depuis un clic sur la liste ou sur un pin de la carte.</p>
+          <figure class="shot">
+            <div class="mock-detail">
+              <div class="detail-header">
+                <div class="detail-title"></div>
+                <div class="detail-subtitle"></div>
+              </div>
+              <div class="detail-section"></div>
+              <div class="detail-section"></div>
+            </div>
+            <figcaption>Le detail affiche le nom, le statut, le type et la description, sans coordonnees visibles.</figcaption>
+          </figure>
+
+          <ul>
+            <li>Le titre affiche le nom du POI.</li>
+            <li>Le sous-titre affiche le statut du POI.</li>
+            <li>La section <code>Type</code> affiche le type du POI.</li>
+            <li>La section <code>Description</code> affiche la description ou un message par defaut.</li>
+            <li>La position exacte n'est pas affichee sous forme de coordonnees.</li>
+            <li>Le bouton <code>Modifier</code> ouvre le formulaire d'edition.</li>
+            <li>Le bouton <code>Retour</code> revient a la liste et deselectionne le POI.</li>
+          </ul>
+        </section>
+
+        <section id="edit">
+          <h2>Modification d'un POI</h2>
+          <p>Le formulaire permet de modifier les informations fonctionnelles du POI.</p>
+          <figure class="shot">
+            <div class="mock-edit">
+              <div class="edit-panel">
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row" style="height: 58px;"></div>
+                <div class="submit"></div>
+              </div>
+            </div>
+            <figcaption>Le formulaire edite les informations du POI ; le deplacement se fait directement sur la carte.</figcaption>
+          </figure>
+
+          <ul>
+            <li><code>Nom</code> est obligatoire.</li>
+            <li><code>Type</code> est obligatoire.</li>
+            <li><code>Statut</code> est obligatoire.</li>
+            <li><code>Description</code> est optionnelle.</li>
+            <li>Les coordonnees ne sont pas affichees dans le formulaire.</li>
+          </ul>
+
+          <h3>Deplacement sur la carte</h3>
+          <ol>
+            <li>Ouvrir le detail d'un POI.</li>
+            <li>Cliquer sur <code>Modifier</code>.</li>
+            <li>Cliquer sur la carte a la nouvelle position souhaitee.</li>
+            <li>Cliquer sur <code>Enregistrer</code>.</li>
+          </ol>
+          <p>
+            Meme si les coordonnees ne sont pas visibles, l'application conserve le comportement :
+            le clic sur la carte met a jour la position sauvegardee du POI.
+          </p>
+
+          <h3>Suppression d'un POI</h3>
+          <p>
+            Le bouton <code>Supprimer</code> demande une confirmation navigateur avant suppression
+            definitive du POI. Utilisez cette action uniquement si le point ne doit plus etre conserve.
+          </p>
+        </section>
+
+        <section id="status">
+          <h2>Statuts et couleurs</h2>
+          <ul>
+            <li><strong>Actif</strong> : POI visible avec un pin cyan.</li>
+            <li><strong>En cours</strong> : POI a verifier ou en cours de traitement, visible avec un pin jaune.</li>
+            <li><strong>Inactif</strong> : POI conserve mais non actif, visible avec un pin rouge.</li>
+          </ul>
+
+          <div class="callout">
+            Le statut peut etre modifie depuis le formulaire de modification d'un POI.
+          </div>
+        </section>
+
+        <section id="help">
+          <h2>Aide rapide</h2>
+          <h3>Je ne peux pas me connecter</h3>
+          <ul>
+            <li>Verifiez votre email et votre mot de passe.</li>
+            <li>Verifiez que votre compte a bien un acces administrateur.</li>
+            <li>Si le probleme persiste, contactez le responsable de l'application.</li>
+          </ul>
+
+          <h3>Je ne vois pas tous les POI</h3>
+          <ul>
+            <li>Verifiez si le filtre <code>En cours</code> est actif.</li>
+            <li>Desactivez le filtre pour afficher tous les POI.</li>
+            <li>Utilisez le bouton d'actualisation pour recharger les donnees.</li>
+          </ul>
+
+          <h3>Un POI n'apparait pas sur la carte</h3>
+          <ul>
+            <li>Verifiez si le filtre <code>En cours</code> masque ce POI.</li>
+            <li>Le POI peut ne pas avoir encore de position definie.</li>
+            <li>Ouvrez sa fiche, passez en modification, puis cliquez sur la carte pour placer le point.</li>
+          </ul>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
