@@ -46,7 +46,7 @@ export default function Sidebar({ onLogout, showPendingOnly, onTogglePendingOnly
     };
 
     const goToDocumentation = () => {
-        window.location.assign("/documentation.html");
+        window.location.assign("/docs/");
     };
 
     const handleSelectPOI = (poi) => {

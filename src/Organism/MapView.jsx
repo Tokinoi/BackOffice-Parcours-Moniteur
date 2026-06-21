@@ -22,9 +22,19 @@ const yellowIcon = L.icon({
     iconAnchor: [18, 48],
 });
 
+const redIcon = L.icon({
+    iconUrl: "/red_pin.svg",
+    iconSize: [36, 48],
+    iconAnchor: [18, 48],
+});
+
 function getPOIIcon(poi) {
     const status = poi.status?.trim().toLowerCase();
-    return status === "en cours" ? yellowIcon : cyanIcon;
+
+    if (status === "en cours") return yellowIcon;
+    if (status === "inactive") return redIcon;
+
+    return cyanIcon;
 }
 
 function MapFocusOnPOI({ poi, isEditingPOI }) {
